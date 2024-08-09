@@ -3,10 +3,10 @@
 **facebook_fetcher** is a simple library used for scraping Facebook web pages.
 
 # Library Information
-*Author:* [**Rahmat Adha**](https://facebook.com/Anjay.pro098)\
+*Author:* [**Åndry RL**](https://facebook.com/Andryerics)\
 *Library:* [**facebook_fetcher**](https://github.com/MR-X-Junior/fbthon)\
-*License:* [**MIT License**](https://github.com/MR-X-junior/fbthon/blob/main/LICENSE)\
-*Release:* **23**/04/20**23**\
+*License:* [**MIT License**](https://github.com/Andryerics/facebook_fetcher/LICENSE)\
+*Release:* **09**/08/20**24**\
 *Version:* **0.0.2**
 
 Since this library is still in its early version, it is likely to have many errors/bugs. If you encounter any errors/bugs in this library, feel free to post them on my [GitHub Issues](https://github.com/MR-X-junior/fbthon/issues) page :)
@@ -19,7 +19,7 @@ Since this library is still in its early version, it is likely to have many erro
 >>> from facebook_fetcher import Facebook
 >>> cookie = Facebook_account_cookie
 >>> fb = Facebook(cookie)
-
+```
 
 ```python
 >>> from facebook_fetcher import Facebook
@@ -29,7 +29,6 @@ Since this library is still in its early version, it is likely to have many erro
 >>> login = Web_Login(email, password)
 >>> cookie = login.get_cookie_str() # This is your Facebook account cookie
 >>> fb = Facebook(cookie)
-
 ```
 
 The method [above](#If-you-dont-have-a-Facebook-account-cookie-you-can-try-the-method-below) will log in to your Facebook account. This method may cause your Facebook account to encounter a checkpoint.
@@ -388,4 +387,152 @@ True
 ```
 
 #### Result
-![Creating a Post (Caption Only)](https
+![Creating a Post (Caption Only)](https://i.ibb.co/wB998Yd/Screenshot-2023-0317-224853.png)
+
+### Creating a Post on a Friend's Account
+To create a post on a friend's account, you just need to change the `target` parameter to the ID or username of your friend :)
+
+**Example:**
+
+```python
+>>> fb.create_timeline(target='Friend’s ID or username', message='This post was created using the fbthon library\n\nHehe :>')
+True
+```
+
+#### Result
+![Creating a Post (Caption Only) on a Friend’s Facebook Account](https://i.ibb.co/cTwRYDh/IMG-20230318-181857.jpg)
+
+### Creating a Post (Tagging Friends)
+To tag friends in a post, you can use the `users_with` argument.
+
+```python
+>>> fb.create_timeline(target='me', message='This post was created using the fbthon library\n\nHehe :>', users_with='friend’s Facebook ID')
+True
+```
+
+#### Result
+![Creating a Post (Tagging Friends)](https://i.ibb.co/tbHKb0x/IMG-20230322-072612.jpg)
+
+### Creating a Post (With Photo)
+You can use the `file` argument to add a photo to your post :)
+
+```python
+>>> fb.create_timeline(target='me', message='Alhamdulillah :)', file='/sdcard/Pictures/Certificate/mimo-certificates-125_page-0001.jpg')
+True
+```
+
+#### Result
+![Creating a Post (With Photo)](https://i.ibb.co/d4nKvVr/Screenshot-2023-0318-151426.png)
+
+Also, you can use the `filter_type` argument to apply a filter to the photo you are uploading.
+
+```python
+>>> fb.create_timeline(target='me', message='Alhamdulillah :)', file='/sdcard/Pictures/Certificate/mimo-certificates-125_page-0001.jpg', filter_type='1')
+True
+```
+
+And here is the result:
+
+![Applying a Filter to a Photo](https://i.ibb.co/twf0tnc/Screenshot-2023-0323-082948.png)
+
+**There are several filter types you can try, including:**
+- No Filter = -1
+- Black and White = 1
+- Retro = 2
+
+### Creating a Post (With Location)
+You can use the `location` argument to add a location to your post.
+
+```python
+>>> fb.create_timeline(target='me', message='This post was created using the fbthon library\n\nHehe :>', location='Muaraancalung, Kalimantan Timur')
+True
+```
+
+#### Result
+![Creating a Post (With Location)](https://i.ibb.co/vh5zh05/Screenshot-2023-0318-145829.png)
+
+### Creating a Post (With Feeling)
+You can use the `feeling` argument to add a feeling to your post.
+
+```python
+>>> fb.create_timeline(target='me', message='This post was created using the fbthon library\n\nHehe :>', feeling='Happy')
+True
+```
+
+#### Result
+![Creating a Post (With Feeling)](https://i.ibb.co/n7yp62b/Screenshot-2023-0318-152335.png)
+
+### Create a Facebook Account
+You can use the `CreateAccount` class to create a Facebook account.
+
+**NOTE: This feature is still experimental, so it may not work reliably.**
+
+#### Example:
+
+Below is a simple program to create a Facebook account.
+
+```python
+import sys
+from facebook_fetcher import CreateAccount
+
+print("[+] Create Facebook Account [+]\n")
+
+firstname = input("[?] First Name: ") # First Name
+lastname = input("[?] Last Name: ") # Last Name
+email = input("[?] Email/Phone: ") # Email Address / Phone Number
+gender = input("[?] Gender (Male/Female): ") # Gender
+birthday = input("[?] Date of Birth (DD/MM/YYYY): ") # Date of Birth
+password = input("[?] Password: ") # Password
+
+new_account = CreateAccount(firstname=firstname, lastname=lastname, email=email, gender=gender, date_of_birth=birthday, password=password)
+
+print("\n[+] Enter the verification code sent to " + email)
+verification_code = input("[?] Verification Code: ")
+
+# The `confirm_account` method will return `True` if the account is successfully confirmed.
+confirmation = new_account.confirm_account(verification_code)
+
+if confirmation:
+    print("[✓] Successfully Created Facebook Account :)\n")
+    print("[+] Account Name: %s %s" % (firstname, lastname))
+    print("[+] Account ID: %s" % (new_account.get_cookie_dict()['c_user']))
+    print("[+] Email/Phone: %s" % (email))
+    print("[+] Gender: %s" % (gender))
+    print("[+] Date of Birth: %s" % (birthday))
+    print("[+] Password: %s" % (password))
+    print("[+] Account Cookie: %s" % (new_account.get_cookie_str()))
+    print("[+] Account Token: %s" % (new_account.get_token()))
+    sys.exit(0)
+else:
+    print("[!] Failed to Create Facebook Account")
+    sys.exit(1)
+```
+
+##### Running the Program
+![Running the script to create a Facebook account using the fbthon library](https://i.ibb.co/2Sd19Wc/Screenshot-2023-0420-093249.png)
+
+###### Result
+This is the account created using the fbthon library :)
+
+![This is a Facebook account created using the fbthon library](https://i.ibb.co/7K3q3hj/Screenshot-20230420-093826.jpg)
+
+#### Optional Parameters
+*(For the `CreateAccount` class)*
+
+- **firstname**: First Name
+- **lastname**: Last Name
+- **email**: Email address to be used for registering a Facebook account. You can also use a phone number instead of an email address.
+- **gender**: Gender (Male/Female)
+- **date_of_birth**: Date of birth in the format DD/MM/YYYY, Example: 13/01/2006
+- **password**: Password to be used for creating the Facebook account.
+
+# Installation
+
+**fbthon** is available on PyPi.
+
+
+```console
+$ python -m pip install facebook_fetcher
+```
+
+**fbthon** can be installed on Python version 3.7+.
